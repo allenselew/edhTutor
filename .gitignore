@@ -1,2 +1,7 @@
-/data/bulk.json
+.DS_Store
 **/.DS_Store
+node_modules/
+scripts/app/exampleDeckList.txt
+scripts/scryfall/data/cache/*
+scripts/scryfall/data/bulk.json
+scripts/scryfall/data/tutors.json
