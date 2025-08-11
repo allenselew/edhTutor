@@ -37,7 +37,7 @@ async function fetchTutorsWithSearches() {
         }
     }
 
-    const outputDir = path.resolve(__dirname, "./data/scryfall");
+    const outputDir = path.resolve(__dirname, "./data/");
     await fs.mkdir(outputDir, { recursive: true });
 
     const outputPath = path.join(outputDir, "tutorsWithSearches.json");

@@ -3,5 +3,6 @@
 node_modules/
 scripts/app/exampleDeckList.txt
 scripts/scryfall/data/cache/*
+!scripts/scryfall/data/cache/.gitkeep
 scripts/scryfall/data/bulk.json
 scripts/scryfall/data/tutors.json

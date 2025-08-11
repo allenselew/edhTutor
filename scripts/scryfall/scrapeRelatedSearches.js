@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import * as cheerio from "cheerio";
 
-const CACHE_DIR = "data/scryfall/cache";
+const CACHE_DIR = "data/cache";
 const CACHE_EXPIRY_MS = 12 * 60 * 60 * 1000; // 12 hours
 
 const __filename = fileURLToPath(import.meta.url);

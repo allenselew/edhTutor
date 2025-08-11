@@ -3,8 +3,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const RESPONSIBLE_CITIZEN_DELAY_MS = 6000;
-const CACHE_DIR = "data/scryfall/cache";
-const CACHE_EXPIRY_MS = 12 * 60 * 60 * 1000; // 12 hours
+const CACHE_DIR = "data/cache";
+const CACHE_EXPIRY_MS = 12 * 60 * 60 * 1000 * 14; // 12 hours * 14 = 7 days
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -108,7 +108,7 @@ async function fetchCards(query, outputFileName = null) {
         await cleanOldCachesForQuery(slug, cachePath);
 
         if (outputFileName) {
-            const outputDir = path.resolve(__dirname, "../../data/scryfall");
+            const outputDir = path.resolve(__dirname, "../../data/");
             await fs.mkdir(outputDir, { recursive: true });
             const outputPath = path.join(outputDir, outputFileName);
             await fs.writeFile(outputPath, JSON.stringify(allCards, null, 2), "utf8");
