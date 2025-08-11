@@ -2,11 +2,19 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Hello World</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>MTG Tutor Finder</title>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <h1>Hello, GitHub Pages!</h1>
-        <p>This site is hosted for free using GitHub Pages.</p>
+        <h1>MTG Tutor Finder</h1>
+
+        <textarea id="decklist-input" rows="10" placeholder="Paste your decklist here..."></textarea>
+        <br />
+        <button id="parse-decklist">Find Tutors</button>
+
+        <div id="tutor-results"></div>
+
+        <script src="script.js"></script>
     </body>
 </html>

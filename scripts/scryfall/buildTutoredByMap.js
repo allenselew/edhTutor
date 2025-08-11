@@ -1,37 +1,54 @@
 import fs from "fs/promises";
 import path from "path";
 
-import tutorsWithMergedSearches from "./data/tutorsWithMergedSearches.json";
-
 async function buildTutoredByMap() {
-    const tutorNames = Object.keys(tutorsWithMergedSearches);
+    try {
+        const tutorsPath = path.resolve(process.cwd(), "data", "tutorsWithFetchedRelatedCards.json");
+        const bulkPath = path.resolve(process.cwd(), "data", "bulk.json");
+        const outPath = path.resolve(process.cwd(), "data", "tutoredByMap.json"); // change if you want a different output
 
-    // Initialize empty map for tutored cards
-    const tutoredByMap = {};
+        // Load files
+        const [tutorsRaw, bulkRaw] = await Promise.all([
+            fs.readFile(tutorsPath, "utf8"),
+            fs.readFile(bulkPath, "utf8"),
+        ]);
 
-    for (const tutor of tutorNames) {
-        // TODO: CHANGE THIS, IT SHOULDNT BE ?.relatedSearches
-        const related = tutorsWithMergedSearches[tutor]?.relatedSearches || [];
+        const tutorsWithFetchedSearches = JSON.parse(tutorsRaw);
+        const bulkCards = JSON.parse(bulkRaw);
 
-        for (const tutoredCardName of related) {
-            if (!tutoredByMap[tutoredCardName]) {
-                tutoredByMap[tutoredCardName] = { tutoredBy: [] };
-            }
-            tutoredByMap[tutoredCardName].tutoredBy.push(tutor);
+        const tutoredByMap = {};
+        for (let i = 0; i < bulkCards.length; i++) {
+            let name = bulkCards[i].name;
+            tutoredByMap[name] = { tutoredBy: [] };
         }
-    }
 
-    // Deduplicate and sort the tutors array for each card
-    for (const cardName in tutoredByMap) {
-        tutoredByMap[cardName].tutoredBy = [...new Set(tutoredByMap[cardName].tutoredBy)].sort();
-    }
+        const tutorNames = Object.keys(tutorsWithFetchedSearches);
 
-    const outPath = path.resolve("data/tutoredByMap.json");
-    await fs.writeFile(outPath, JSON.stringify(tutoredByMap, null, 2), "utf8");
-    console.log(`Saved tutoredByMap for ${Object.keys(tutoredByMap).length} cards to ${outPath}`);
+        for (const tutor of tutorNames) {
+            const relatedSearches = tutorsWithFetchedSearches[tutor]?.relatedSearches || {};
+            const allTutoredCards = [...new Set(Object.values(relatedSearches).flat())];
+
+            // Add each resolved card to the reverse map
+            for (const cardName of allTutoredCards) {
+                if (!tutoredByMap[cardName]) {
+                    tutoredByMap[cardName] = { tutoredBy: [] };
+                }
+                tutoredByMap[cardName].tutoredBy.push(tutor);
+            }
+        }
+
+        // // Deduplicate and sort the tutor lists
+        // for (const cardName of Object.keys(tutoredByMap)) {
+        //     tutoredByMap[cardName].tutoredBy = [...new Set(tutoredByMap[cardName].tutoredBy)].sort();
+        // }
+
+        // Write output
+        await fs.writeFile(outPath, JSON.stringify(tutoredByMap, null, 2), "utf8");
+        console.log(`Saved tutoredByMap for ${Object.keys(tutoredByMap).length} cards to ${outPath}`);
+    } catch (err) {
+        console.error("Error building tutoredByMap:", err);
+        process.exit(1);
+    }
 }
 
-buildTutoredByMap().catch((err) => {
-    console.error("Error building tutoredByMap:", err);
-    process.exit(1);
-});
+buildTutoredByMap();

@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 2em;
+    max-width: 600px;
+}
+textarea {
+    width: 100%;
+    font-family: monospace;
+    font-size: 14px;
+}
+button {
+    margin-top: 1em;
+    padding: 0.5em 1em;
+    font-size: 16px;
+}
+#tutor-results {
+    margin-top: 1.5em;
+}
+ul {
+    padding-left: 1.2em;
+}
